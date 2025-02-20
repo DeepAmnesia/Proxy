@@ -2,10 +2,9 @@
 #include "SSLManager.h"
 #include "ClientHandler.h"
 
-std::mutex thread_mutex; // Мьютекс для защиты доступа к общим ресурсам
+std::mutex thread_mutex; 
 
 #ifdef WIN32
-// Инициализация WinSock для Windows
 void initializeWinSock() {
     WSADATA wsaData;
     if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
@@ -15,13 +14,11 @@ void initializeWinSock() {
 }
 #endif
 
-// Класс для запуска прокси-сервера
 class ProxyServer {
 public:
     ProxyServer(int port) : port(port) {}
 
     void start() {
-        // Создание серверного сокета на порту 443
         SOCKET serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
         if (serverSocket == INVALID_SOCKET) {
             std::cerr << "Error creating socket" << std::endl;
@@ -45,7 +42,6 @@ public:
 
         std::cout << "Listening on port " << port << "..." << std::endl;
 
-        // Принимаем соединения от клиентов
         while (true) {
             SOCKET clientSocket = accept(serverSocket, nullptr, nullptr);
             if (clientSocket == INVALID_SOCKET) {

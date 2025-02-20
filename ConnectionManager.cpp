@@ -5,7 +5,6 @@ SOCKET ConnectionManager::connectToTargetServer(const unsigned char* buffer) {
     sockaddr_in6 targetAddr6;
     SOCKET targetSocket = INVALID_SOCKET;
 
-    // Проверка типа адреса
     if (buffer[3] == SOCKS5_ATYP_IPV4) {
         targetAddr4.sin_family = AF_INET;
         targetAddr4.sin_addr.s_addr = *(reinterpret_cast<unsigned long*>(&buffer[4]));
@@ -29,10 +28,9 @@ SOCKET ConnectionManager::connectToTargetServer(const unsigned char* buffer) {
         targetSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     }
     else if (buffer[3] == SOCKS5_ATYP_IPV6) {
-        // IPv6 адрес
         targetAddr6.sin6_family = AF_INET6;
-        memcpy(&targetAddr6.sin6_addr, &buffer[4], 16); // Копируем 16 байт для IPv6 адреса
-        targetAddr6.sin6_port = *(reinterpret_cast<unsigned short*>(&buffer[20])); // Порт после IPv6 адреса
+        memcpy(&targetAddr6.sin6_addr, &buffer[4], 16); 
+        targetAddr6.sin6_port = *(reinterpret_cast<unsigned short*>(&buffer[20]));
         targetSocket = socket(AF_INET6, SOCK_STREAM, IPPROTO_TCP);
     }
 

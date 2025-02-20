@@ -9,7 +9,6 @@ void SSLManager::initializeSSL() {
         exit(1);
     }
 
-    // Укажите путь к вашему SSL сертификату и ключу
     if (!SSL_CTX_use_certificate_file(ctx, "server.crt", SSL_FILETYPE_PEM) ||
         !SSL_CTX_use_PrivateKey_file(ctx, "server.key", SSL_FILETYPE_PEM)) {
         std::cerr << "Error loading certificate or key" << std::endl;
@@ -27,5 +26,5 @@ SSLManager::SSLManager() {
 }
 
 SSLManager::~SSLManager() {
-    SSL_CTX_free(ctx);  // Очистка контекста SSL
+    SSL_CTX_free(ctx); 
 }
